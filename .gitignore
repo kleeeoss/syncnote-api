@@ -1,0 +1,12 @@
+# Cloud and Security Keys
+*.pem
+.env
+
+# Python caching
+__pycache__/
+*.pyc
+
+# IDE files
+.idea/
+.vscode/
+.venv/
