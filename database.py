@@ -38,5 +38,5 @@ def get_db_connection():
 
 def release_db_connection(conn):
     """Return the connection to the pool"""
-    if connection_pool is not None:
+    if connection_pool is not None and conn is not None:
         connection_pool.putconn(conn)

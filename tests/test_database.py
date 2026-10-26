@@ -53,3 +53,30 @@ def test_get_and_release_connection():
 
         database.release_db_connection(conn)
         mock_pool.putconn.assert_called_once_with(mock_conn)
+
+
+def test_get_connection_raises_when_pool_is_none():
+    with patch("psycopg2.pool.SimpleConnectionPool", side_effect=Exception("DB Down")):
+        import importlib
+        import database
+        importlib.reload(database)
+
+        assert database.connection_pool is None
+        with pytest.raises(RuntimeError, match="Database connection pool is not initialized"):
+            database.get_db_connection()
+
+
+def test_release_connection_handles_none_gracefully():
+    mock_pool = MagicMock()
+    with patch("psycopg2.pool.SimpleConnectionPool", return_value=mock_pool):
+        import importlib
+        import database
+        importlib.reload(database)
+
+        # Releasing None should be safe no-op
+        database.release_db_connection(None)
+        mock_pool.putconn.assert_not_called()
+
+        # Releasing when pool is None should be safe no-op
+        database.connection_pool = None
+        database.release_db_connection(MagicMock())
