@@ -1,0 +1,11 @@
+.git/
+.gitignore
+.env*
+*.pem*
+*:Zone.Identifier
+venv/
+.venv/
+__pycache__/
+*.pyc
+.idea/
+.vscode/
